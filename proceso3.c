@@ -81,7 +81,7 @@ int main(){
 
     char* ruta = (char *) ptr;
     ptr += strlen(ruta);
-    printf("La ruta es: %s\n", ruta);
+
 
 
 
