@@ -78,7 +78,7 @@ int main(){
     }
 
     sem_wait(semp3);
-    printf("me desbloquearon\n");
+
     char* ruta = (char *) ptr;
     ptr += strlen(ruta);
     printf("La ruta es: %s\n", ruta);

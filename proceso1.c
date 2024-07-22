@@ -63,8 +63,13 @@ int main(int argc, char *argv[]){
                 char msg[] = "No se encuentra el archivo a ejecutar";
                 int sizeMsg = strlen(msg) + 1;
 
-                write(tuberia1[1], &sizeMsg, sizeof(int));
-                write(tuberia2[1], msg ,sizeof(msg));
+                printf("La longitud del msg original es de: %d\n", sizeMsg);
+
+                // Primero enviamos la longitud del mensaje
+                write(tuberia2[1], &sizeMsg, sizeof(int));
+                write(tuberia2[1], msg , strlen(msg));
+
+                close(tuberia2[1]);
                 return -1;
 
 
@@ -83,8 +88,12 @@ int main(int argc, char *argv[]){
                     char msg[] = "Proceso p3 no parece estar en ejecucion";
                     int sizeMsg = strlen(msg) + 1;
 
-                    write(tuberia1[1], &sizeMsg, sizeof(int));
-                    write(tuberia2[1], msg ,sizeof(msg));
+                    // Primero enviamos la longitud del mensaje
+
+                    write(tuberia2[1], &sizeMsg, sizeof(int));
+                    write(tuberia2[1], msg ,strlen(msg));
+
+                    close(tuberia2[1]);
                     return -1;
 
                 }
@@ -102,8 +111,10 @@ int main(int argc, char *argv[]){
                     char msg[] = "Proceso p3 no parece estar en ejecucion";
                     int sizeMsg = strlen(msg) + 1;
 
-                    write(tuberia1[1], &sizeMsg, sizeof(int));
-                    write(tuberia2[1], msg ,sizeof(msg));
+                    // Primero enviamos la longitud del mensaje
+
+                    write(tuberia2[1], &sizeMsg, sizeof(int));
+                    write(tuberia2[1], msg ,strlen(msg));
                     return -1;
 
 
@@ -133,7 +144,6 @@ int main(int argc, char *argv[]){
                 char * output = (char *) ptr;
                 ptr += strlen(output);
                 int sizeOutput = strlen(output) + 1;
-                printf("el size fue: %d\n", sizeOutput);
                 // Output que estaba en la memoria compartida se pone en tuberia2 para el proceso 1
 
                 write(tuberia2[1], &sizeOutput, sizeof(int));
@@ -157,14 +167,17 @@ int main(int argc, char *argv[]){
 
             close(tuberia2[1]);
 
+
+            // primero recibimos la longitud del mensaje u output
             int sizeMsg;
 
             read(tuberia2[0], &sizeMsg, sizeof(int));
-            printf("el sizemsg = %d\n", sizeMsg);
 
+
+            // luego recibimos el mensaje u output
             char msg[sizeMsg];
             read(tuberia2[0], msg, sizeof(msg));
-            printf("msg = %s\n", msg);
+            printf("\n%s\n", msg);
 
             printf("Proceso 1 terminado\n");
 
